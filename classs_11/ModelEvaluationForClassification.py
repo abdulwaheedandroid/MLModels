@@ -3,8 +3,12 @@ accuracy_score,
 confusion_matrix,
 classification_report
 )
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import (
+    train_test_split,
+    cross_val_score
+)
 from sklearn.linear_model import LogisticRegression
+
 
 import pandas as pd
 
@@ -32,9 +36,13 @@ model.fit(X_train, y_train)
 predictions = model.predict(X_test)
 print(predictions)
 
+train_prediction = model.predict(X_train)
+
 #Accuracy
 accuracy = accuracy_score(y_test,predictions)
-print(accuracy)
+train_accuracy = accuracy_score(y_train,train_prediction)
+print("Test accuracy is ", accuracy)
+print("Train accuracy is ", train_accuracy)
 
 #Confusion Matrix
 confusion_matrix = confusion_matrix(y_test, predictions)
@@ -43,6 +51,12 @@ print(confusion_matrix)
 #Classification Report
 classification_report = classification_report(y_test, predictions)
 print(classification_report)
+
+#Cross val score
+scores = cross_val_score(
+    model, df[["StudyHours", "Attendance"]], y, cv =5
+)
+print("Scores are " ,scores)
 
 
 
